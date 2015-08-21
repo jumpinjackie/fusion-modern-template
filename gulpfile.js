@@ -10,6 +10,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var debug = require('gulp-debug');
 var ts = require('gulp-typescript');
+var rimraf = require('rimraf');
 
 var paths = {
     output: "shared/dist",
@@ -75,6 +76,20 @@ gulp.task("styles", function() {
         .pipe(concatCSS("fusion.all.css"))
         .pipe(gulp.dest(paths.output + "/css"))
 });
+
+gulp.task("clean:dist", function(cb) {
+    rimraf(paths.output, cb);
+});
+
+gulp.task("clean:js", function(cb) {
+    rimraf(paths.fusion_output, cb);
+});
+
+gulp.task("clean:css", function(cb) {
+    rimraf(paths.css_output, cb);
+});
+
+gulp.task("clean", ["clean:dist", "clean:js", "clean:css"]);
 
 //gulp.task("watch", function() {
 //    gulp.watch("shared/lib/**/*.js", ["lint", "scripts"]);
