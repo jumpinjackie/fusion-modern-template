@@ -1,4 +1,4 @@
-mapguide-ajax-viewer
-====================
+fusion-modern-template
+======================
 
-A modern reinterpretation of the MapGuide AJAX viewer
+A modern Fusion viewer template

@@ -1,0 +1,38 @@
+{
+    "version": "0.1.0",
+    "command": "gulp",
+    "isShellCommand": true,
+    "args": [
+        "--no-color"
+    ],
+    "tasks": [
+        {
+            "showOutput": "always",
+            "taskName": "default",
+            "args": [ "lint" ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "showOutput": "always",
+            "taskName": "sass",
+            "args": [ "sass" ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "showOutput": "always",
+            "taskName": "scripts",
+            "args": [ "scripts" ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "showOutput": "always",
+            "taskName": "ts",
+            "args": [ "ts" ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
