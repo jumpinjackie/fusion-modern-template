@@ -28,7 +28,7 @@ var files = {
         "shared/lib/knockout-3.3.0.debug.js"
     ],
     fusion: [
-        paths.fusion_output + "/fusion.js"
+        paths.fusion_output + "/fusion.all.js"
     ],
     styles: [
         "shared/styles/ol.css",
@@ -43,7 +43,7 @@ gulp.task("ts", function() {
         //.pipe(debug({ title: "ts: "}))
         .pipe(ts({
             target: "ES5",
-            module: "amd",
+            out: "fusion.all.js",
             sourceMap: true
         }))
         .js.pipe(gulp.dest(paths.fusion_output));

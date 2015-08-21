@@ -3,4 +3,3 @@ class Widget {
         
     }
 }
-export = Widget;
