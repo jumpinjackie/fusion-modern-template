@@ -1,9 +1,27 @@
 module Fusion {
+    /**
+     * Models an application definition document
+     */
     export interface ApplicationDefinition {
+        /**
+         * The title to display
+         */
         Title: string;
+        /**
+         * The template URL
+         */
         TemplateUrl: string;
+        /**
+         * The map set to display
+         */
         MapSet: MapSet;
+        /**
+         * The widget set encapsulating the set of functionality for this application
+         */
         WidgetSet: WidgetSet;
+        /**
+         * External scripts required for commerical layer integration
+         */
         Extension?: CommericalLayerOptions;
     }
     
@@ -67,6 +85,9 @@ module Fusion {
         MapId: string;
     }
     
+    /**
+     * Defines and activates a widget
+     */
     export interface WidgetDefinition {
         Name: string;
         Type: string;
@@ -80,6 +101,10 @@ module Fusion {
         Disabled: boolean;
     }
     
+    /**
+     * A set of widget references. This models a container that contains one or more references
+     * to various widgets (eg. A Toolbar or Menu)
+     */
     export interface WidgetContainer {
         Name: string;
         Type: string;
@@ -88,6 +113,9 @@ module Fusion {
         Item: WidgetReference[];
     }
     
+    /**
+     * A reference to a widget
+     */
     export interface WidgetReference {
         Function: string;
         Widget?: string;

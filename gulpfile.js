@@ -11,6 +11,7 @@ var rename = require('gulp-rename');
 var debug = require('gulp-debug');
 var ts = require('gulp-typescript');
 var rimraf = require('rimraf');
+var del = require('del');
 
 var paths = {
     output: "shared/dist",
@@ -35,6 +36,7 @@ var files = {
         "shared/styles/css/ol3-sidebar.css"
     ],
     fusionTS: "shared/src/fusion/**/*.ts",
+    fusionTS_compiled_output: "shared/src/fusion/**/*.js",
     sass: "shared/styles/scss/*.scss"
 };
 
@@ -85,11 +87,15 @@ gulp.task("clean:js", function(cb) {
     rimraf(paths.fusion_output, cb);
 });
 
+gulp.task("clean:ts", function(cb) {
+    del(files.fusionTS_compiled_output, cb);
+});
+
 gulp.task("clean:css", function(cb) {
     rimraf(paths.css_output, cb);
 });
 
-gulp.task("clean", ["clean:dist", "clean:js", "clean:css"]);
+gulp.task("clean", ["clean:dist", "clean:js", "clean:ts", "clean:css"]);
 
 //gulp.task("watch", function() {
 //    gulp.watch("shared/lib/**/*.js", ["lint", "scripts"]);

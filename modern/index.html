@@ -74,7 +74,16 @@
         <script src="../shared/dist/fusionSF.js"></script>
         <script type="text/javascript">
             $(function() {
-                Fusion.initialize();
+                $("#sidebar").sidebar();
+                Fusion.LOG_ERROR = true;
+                Fusion.LOG_DEBUG = true;
+                Fusion.LOG_WARN = true;
+                Fusion.LOG_INFO = true;
+                Fusion.initialize({
+                    appDef: {
+                        Title: "Modern Template"
+                    }
+                });
             });
         </script>
     </body>
