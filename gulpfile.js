@@ -126,4 +126,4 @@ gulp.task("clean", ["clean:dist", "clean:js", "clean:ts", "clean:css", "test:cle
 //    gulp.watch("shared/scss/*.scss", ["sass"]);
 //});
 
-gulp.task("default", ["lint", "sass", "ts", "scripts", "styles", "test"]);
+gulp.task("default", ["lint", "sass", "ts", "scripts", "styles"]);
