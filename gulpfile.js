@@ -12,10 +12,13 @@ var debug = require('gulp-debug');
 var ts = require('gulp-typescript');
 var rimraf = require('rimraf');
 var del = require('del');
+var merge = require('merge2');
+var qunit = require('gulp-qunit');
 
 var paths = {
     output: "shared/dist",
     fusion_output: "shared/src/js",
+    test_output: "shared/src/test",
     css_output: "shared/styles/css"
 };
 
@@ -28,8 +31,9 @@ var files = {
         "shared/lib/ol-debug.js",
         "shared/lib/knockout-3.3.0.debug.js"
     ],
+    test: "shared/src/test/**/test_*.js",
     fusion: [
-        paths.fusion_output + "/fusion.all.js"
+        paths.fusion_output + "/fusion.js"
     ],
     styles: [
         "shared/styles/ol.css",
@@ -41,14 +45,19 @@ var files = {
 };
 
 gulp.task("ts", function() {
-    return gulp.src(files.fusionTS)
+    var tsResult = gulp.src(files.fusionTS)
         //.pipe(debug({ title: "ts: "}))
         .pipe(ts({
             target: "ES5",
-            out: "fusion.all.js",
+            out: "fusion.js",
+            declarationFiles: true,
             sourceMap: true
-        }))
-        .js.pipe(gulp.dest(paths.fusion_output));
+        }));
+
+    return merge([
+        tsResult.dts.pipe(gulp.dest(paths.output)),
+        tsResult.js.pipe(gulp.dest(paths.fusion_output))
+    ]);
 });
 
 gulp.task("lint", function() {
@@ -65,12 +74,27 @@ gulp.task("sass", function() {
 gulp.task("scripts", function() {
     return gulp.src(files.libs.concat(files.fusion))
         //.pipe(debug({ title: "scripts: "}))
-        .pipe(concat("fusionSF.js"))
+        .pipe(concat("fusion.all.js"))
         .pipe(gulp.dest(paths.output))
-        .pipe(rename("fusionSF-compressed.js"))
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.output));
+        .pipe(gulp.dest(paths.test_output));
 });
+
+gulp.task("test:build", ["scripts"], function() {
+    return gulp.src(files.test)
+        .pipe(concat("tests.all.js"))
+        .pipe(gulp.dest(paths.test_output));
+});
+
+gulp.task("test:clean", function(cb) {
+    del([ "shared/src/test/fusion*.js", "shared/src/test/tests.all.js", "shared/src/test/fusion.d.ts" ], cb);
+});
+
+gulp.task("test:run", ["test:build"], function() {
+    return gulp.src("shared/src/test/index.html")
+        .pipe(qunit());
+});
+
+gulp.task("test", ["test:build", "test:run"]);
 
 gulp.task("styles", function() {
     return gulp.src(files.styles)
@@ -95,11 +119,11 @@ gulp.task("clean:css", function(cb) {
     rimraf(paths.css_output, cb);
 });
 
-gulp.task("clean", ["clean:dist", "clean:js", "clean:ts", "clean:css"]);
+gulp.task("clean", ["clean:dist", "clean:js", "clean:ts", "clean:css", "test:clean"]);
 
 //gulp.task("watch", function() {
 //    gulp.watch("shared/lib/**/*.js", ["lint", "scripts"]);
 //    gulp.watch("shared/scss/*.scss", ["sass"]);
 //});
 
-gulp.task("default", ["lint", "sass", "ts", "scripts", "styles"]);
+gulp.task("default", ["lint", "sass", "ts", "scripts", "styles", "test"]);

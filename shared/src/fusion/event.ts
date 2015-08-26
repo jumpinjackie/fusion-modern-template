@@ -10,12 +10,12 @@ module Fusion {
         ERROR
     }
     
-    export type EventHandler = (event: EventType, args: any) => void;
+    export type EventHandler = (event: EventType | number, args: any) => void;
     
     class EventSubscription {
-        private _id: EventType;
+        private _id: EventType | number;
         private _handler: EventHandler;
-        constructor(id: EventType, handler: EventHandler) {
+        constructor(id: EventType | number, handler: EventHandler) {
             this._id = id;
             this._handler = handler;
         }
@@ -28,24 +28,28 @@ module Fusion {
      * Supports registration of application-defined events
      */
     export interface EventEmittable {
-        registerForEvent(event: EventType, handler: EventHandler);
+        hasRegistrations(event: EventType | number): boolean;
+        registerForEvent(event: EventType | number, handler: EventHandler): void;
     }
     
     /**
      * Supports registration and emitting of application-defined events
      */
-    export class EventEmitter {
+    export class EventEmitter implements EventEmittable {
         private _subscriptions: { [event: number]: EventSubscription[]; };
         constructor() {
-            
+            this._subscriptions = {};
         }
-        public registerForEvent(event: EventType, handler: EventHandler) {
-            if (!this._subscriptions[event])
+        public registerForEvent(event: EventType | number, handler: EventHandler) {
+            if (!this.hasRegistrations(event))
                 this._subscriptions[event] = [];
             
             this._subscriptions[event].push(new EventSubscription(event, handler));
         }
-        protected trigger(event: EventType, args: any) {
+        public hasRegistrations(event: EventType | number): boolean {
+            return !!this._subscriptions[event];
+        }
+        protected trigger(event: EventType | number, args: any) {
             this._subscriptions[event].forEach((evt, i, arr) => {
                 evt.raise(args);
             });

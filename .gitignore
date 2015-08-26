@@ -12,3 +12,5 @@
 /node_modules
 /shared/dist
 /shared/src/js
+/shared/src/test/fusion.all.js
+/shared/src/test/tests.all.js

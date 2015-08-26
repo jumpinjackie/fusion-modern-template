@@ -1,4 +1,5 @@
-/// <reference path="../../../typings/tsd.d.ts" />
+/// <reference path="../../../typings/openlayers/openlayers.d.ts" />
+/// <reference path="./appdef.ts" />
 /// <reference path="./map.ts" />
 /// <reference path="./widget.ts" />
 /// <reference path="./event.ts" />

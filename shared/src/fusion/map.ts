@@ -1,4 +1,4 @@
-/// <reference path="../../../typings/tsd.d.ts" />
+/// <reference path="../../../typings/openlayers/openlayers.d.ts" />
 /// <reference path="./widget.ts" />
 
 module Fusion {
